@@ -1,0 +1,90 @@
+"""
+Number Guessing Game
+
+This Python program is a number guessing game where the player tries to guess a randomly generated secret number. The program provides feedback on each guess, indicating whether the guess is too high or too low. The player's objective is to guess the correct number with the fewest attempts possible.
+
+Features:
+- Randomly generates a secret number between 1 and 25 for each game.
+- Keeps track of the number of attempts made by the player.
+- Displays the current high score (lowest number of attempts) achieved in previous games.
+- Allows the player to continue playing or exit the game after making a correct guess.
+
+How to Play:
+1. Run the program and follow the instructions prompted in the console.
+2. Enter your name when prompted to personalize the game experience.
+3. Guess a number between 1 and 25.
+4. The program will provide feedback on your guess, indicating whether it's too high or too low.
+5. Keep guessing until you correctly guess the secret number.
+6. After each correct guess, the program will ask if you want to continue playing.
+7. The program will keep track of the number of attempts you made and update the high score accordingly.
+8. If you choose not to continue playing, the program will display your final score and exit.
+
+Tips:
+- Pay attention to the feedback provided after each guess to narrow down your subsequent guesses.
+- Try to beat your own high score by guessing the secret number with the fewest attempts.
+
+Enjoy the game and have fun improving your Python programming skills!
+
+Author: [Abdulbasit Olajuwon]
+Date: [03-05-2020]
+"""
+
+
+
+
+import random
+
+attempts_records = []
+
+def show_score():
+    if not attempts_records:
+        print('No current high score.\nGive it a try')
+    else:
+        print(f'Current high score: {min(attempts_records)} attempts')
+
+def start_game():
+    attempts = 0
+    secret_number = random.randint(1, 25)
+    print('Welcome to the world of guesses!')
+    player_name = input("What is the guesser's name: ")
+    ready = input(f'Hi {player_name}! Do you want to play? Enter (Yes/No): ')
+
+    if ready.lower() != 'yes':
+        print('Alright, here we go:')
+        exit()
+    else:
+        show_score()
+
+    while ready.lower() == 'yes':
+        try:
+            guess = int(input("Enter a number between 1 and 25: "))
+            if guess < 1 or guess > 25:
+                raise ValueError('Enter a number within the range')
+
+            attempts += 1
+
+            if guess == secret_number:
+                print('Et Fabolouso!')
+                print(f'It took you {attempts} attempts')
+                attempts_records.append(attempts)
+                ready = input(f'{player_name}, do you want to continue playing? Enter (Yes/No): ')
+                if ready.lower() != 'yes':
+                    print('Excellent! Thanks for playing.')
+                    break
+                else:
+                    attempts = 0
+                    secret_number = random.randint(1, 25)
+                    show_score()
+                    continue
+            else:
+                if guess > secret_number:
+                    print('Too High! Try again.')
+                elif guess < secret_number:
+                    print('Too Low! Try again.')
+
+        except ValueError as err:
+            print('That is not a valid input... Try again')
+            print(err)
+
+if __name__ == '__main__':
+    start_game()
